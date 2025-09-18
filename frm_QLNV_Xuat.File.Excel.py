@@ -1,9 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkcalendar import DateEntry
-import csv
+import openpyxl
 import os
-
 
 # ===== Hàm canh giữa cửa sổ =====
 def center_window(win, w=630, h=480):
@@ -68,7 +67,6 @@ lbl_ds.pack(pady=5, anchor="w", padx=10)
 columns = ("maso", "holot", "ten", "phai", "ngaysinh", "chucvu")
 tree = ttk.Treeview(root, columns=columns, show="headings", height=10)
 
-# Cấu hình tiêu đề cột
 for col in columns:
     tree.heading(col, text=col.capitalize())
 
@@ -81,8 +79,8 @@ tree.column("chucvu", width=150)
 
 tree.pack(padx=10, pady=5, fill="both")
 
-# ======= HÀM CHỨC NĂNG CRUD + CSV =======
-DATA_FILE = "nhanvien.csv"
+# ======= HÀM CHỨC NĂNG CRUD + Excel =======
+DATA_FILE = "nhanvien.xlsx"
 
 def clear_input():
     """Xóa sạch dữ liệu nhập"""
@@ -108,7 +106,7 @@ def them_nv():
 
     tree.insert("", tk.END, values=(maso, holot, ten, phai, ngaysinh, chucvu))
     clear_input()
-    save_to_csv()
+    save_to_excel()
 
 def xoa_nv():
     """Xóa nhân viên được chọn trong bảng"""
@@ -117,7 +115,7 @@ def xoa_nv():
         messagebox.showwarning("Chưa chọn", "Hãy chọn một nhân viên để xóa!")
         return
     tree.delete(selected_item)
-    save_to_csv()
+    save_to_excel()
 
 def sua_nv():
     """Tải dữ liệu từ bảng vào form để sửa"""
@@ -157,29 +155,33 @@ def luu_nv():
 
     tree.item(selected_item, values=(maso, holot, ten, phai, ngaysinh, chucvu))
     clear_input()
-    save_to_csv()
+    save_to_excel()
 
-def save_to_csv():
-    """Lưu toàn bộ dữ liệu trong Treeview ra file CSV"""
-    with open(DATA_FILE, mode="w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        # Ghi tiêu đề
-        writer.writerow(columns)
-        # Ghi dữ liệu từng dòng
-        for row_id in tree.get_children():
-            row = tree.item(row_id)["values"]
-            writer.writerow(row)
+def save_to_excel():
+    """Lưu toàn bộ dữ liệu trong Treeview ra file Excel"""
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "NhanVien"
 
-def load_from_csv():
-    """Đọc dữ liệu từ file CSV và hiển thị lên Treeview"""
+    # Ghi tiêu đề
+    ws.append(columns)
+
+    # Ghi dữ liệu từng dòng
+    for row_id in tree.get_children():
+        row = tree.item(row_id)["values"]
+        ws.append(row)
+
+    wb.save(DATA_FILE)
+
+def load_from_excel():
+    """Đọc dữ liệu từ file Excel và hiển thị lên Treeview"""
     if not os.path.exists(DATA_FILE):
         return
-    with open(DATA_FILE, mode="r", encoding="utf-8") as f:
-        reader = csv.reader(f)
-        next(reader, None)  # bỏ dòng tiêu đề
-        for row in reader:
-            if row:  # bỏ dòng trống
-                tree.insert("", tk.END, values=row)
+    wb = openpyxl.load_workbook(DATA_FILE)
+    ws = wb.active
+    for row in ws.iter_rows(min_row=2, values_only=True):  # bỏ dòng tiêu đề
+        if row:
+            tree.insert("", tk.END, values=row)
 
 # ===== FRAME BUTTON =====
 frame_btn = tk.Frame(root)
@@ -203,14 +205,15 @@ btn_xoa.grid(row=0, column=4, padx=5)
 btn_thoat = tk.Button(frame_btn, text="Thoát", width=8, command=root.quit)
 btn_thoat.grid(row=0, column=5, padx=5)
 
-# ===== Load dữ liệu từ CSV khi mở chương trình =====
-load_from_csv()
+# ===== Load dữ liệu từ Excel khi mở chương trình =====
+load_from_excel()
 
 # ===== MAIN LOOP =====
 root.mainloop()
 
 '''
-save_to_csv(): Mỗi khi thêm, sửa, xóa → ghi toàn bộ dữ liệu trong Treeview ra file nhanvien.csv.
-load_from_csv(): Khi mở chương trình, đọc file CSV → hiển thị lại dữ liệu cũ vào bảng.
-File nhanvien.csv sẽ nằm cùng thư mục với file Python của bạn.
+save_to_excel(): mỗi khi thêm/sửa/xóa → ghi toàn bộ dữ liệu vào nhanvien.xlsx.
+load_from_excel(): khi mở chương trình → đọc dữ liệu từ Excel và đưa vào bảng.
+Dữ liệu lưu ở sheet NhanVien.
+File Excel sẽ nằm cùng thư mục với file Python.
 '''
