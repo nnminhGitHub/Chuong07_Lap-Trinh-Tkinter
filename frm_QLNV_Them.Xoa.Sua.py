@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from tkcalendar import DateEntry
 
-
 # ===== Hàm canh giữa cửa sổ =====
 def center_window(win, w=630, h=480):
     ws = win.winfo_screenwidth()
@@ -10,7 +9,6 @@ def center_window(win, w=630, h=480):
     x = (ws // 2) - (w // 2)
     y = (hs // 2) - (h // 2)
     win.geometry(f'{w}x{h}+{x}+{y}')
-
 
 # ===== CỬA SỔ CHÍNH =====
 root = tk.Tk()
@@ -85,7 +83,6 @@ tree.column("chucvu", width=150)
 tree.pack(padx=10, pady=5, fill="both")
 
 # ======= HÀM CHỨC NĂNG CRUD =======
-
 def clear_input():
     """Xóa sạch dữ liệu nhập"""
     entry_maso.delete(0, tk.END)

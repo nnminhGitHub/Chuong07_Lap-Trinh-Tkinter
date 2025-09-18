@@ -12,7 +12,6 @@ def center_window(win, w=630, h=480):
     y = (hs // 2) - (h // 2)
     win.geometry(f'{w}x{h}+{x}+{y}')
 
-
 # ===== CỬA SỔ CHÍNH =====
 root = tk.Tk()
 root.title("Quản lý nhân viên")
