@@ -13,7 +13,7 @@ def center_window(win, w=630, h=480):
 # ===== CỬA SỔ CHÍNH =====
 root = tk.Tk()
 root.title("Quản lý nhân viên")
-center_window(root, 630, 480)
+center_window(root, 720, 480)
 root.resizable(False, False)
 
 # ===== TIÊU ĐỀ =====
