@@ -4,8 +4,10 @@ from tkcalendar import DateEntry
 
 # ===== Hàm canh giữa cửa sổ =====
 def center_window(win, w=630, h=480):
+    # get screen width and height
     ws = win.winfo_screenwidth()
     hs = win.winfo_screenheight()
+    # calculate position x, y
     x = (ws // 2) - (w // 2)
     y = (hs // 2) - (h // 2)
     win.geometry(f'{w}x{h}+{x}+{y}')
@@ -23,6 +25,14 @@ lbl_title.pack(pady=10)
 # ===== FRAME THÔNG TIN =====
 frame_info = tk.Frame(root)
 frame_info.pack(pady=5, padx=10, fill="x")
+'''
+Frame trong Tkinter là một "khung chứa" (container widget).
+→ Nó dùng để nhóm các widget khác lại (ví dụ: Entry, Label, Button...) vào cùng một khu vực.
+Các tham số:
+→ padx=10: tạo khoảng cách trái & phải giữa frame_info và biên của cửa sổ.
+→ pady=5: tạo khoảng cách trên & dưới.
+→ fill="x": làm cho frame_info kéo dài hết chiều ngang (x) của cửa sổ chính.
+'''
 
 # Mã số
 tk.Label(frame_info, text="Mã số").grid(row=0, column=0, padx=5, pady=5, sticky="w")
