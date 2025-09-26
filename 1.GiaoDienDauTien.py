@@ -1,10 +1,11 @@
 '''
-Tkinter là thư viên thiết kế giao diện tương tác người dùng Graphic User Interface (GUI) tiêu chuẩn cho Python.
+Tkinter là thư viên thiết kế giao diện tương tác người dùng Graphic User Interface (GUI)
 Trình tự các bước để tạo ra một ứng dụng Tkinter gồm:
 - import Tkinter module
 - Tạo cửa sổ chính của ứng dụng GUI
 - Thêm một hoặc nhiều widget vào ứng dụng GUI
-- Gọi vòng lặp sự kiện chính để các hành động có thể diễn ra trên màn hình máy tính của người dùng
+- Gọi vòng lặp sự kiện chính để các hành động có thể diễn ra trên màn hình máy tính
+  của người dùng
 '''
 # Nhập module tkinter để bạn có thể sử dụng các thành phần của nó, 
 # thường được đặt tên viết tắt là tk để tiện sử dụng.
